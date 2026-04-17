@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Data - Banking Fraud Detection{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-file-upload me-2"></i>Upload Transaction Data</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    Upload a CSV file containing transaction data. The file must include an "amount" column.
+                    Optionally include an "is_fraud" column (0 for normal, 1 for fraudulent) for accuracy evaluation.
+                </p>
+
+                <form method="POST" enctype="multipart/form-data" class="text-center">
+                    <div class="mb-4">
+                        <label for="file" class="form-label">
+                            <i class="fas fa-file-csv fa-2x text-primary mb-2"></i>
+                            <br>
+                            Choose CSV File
+                        </label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".csv" required>
+                        <div class="form-text">
+                            Maximum file size: 10MB. Supported format: CSV
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-search me-2"></i>Analyze for Fraud
+                    </button>
+                </form>
+
+                <hr class="my-4">
+
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>CSV Format Requirements:</h6>
+                    <ul class="mb-0">
+                        <li><strong>Required:</strong> <code>amount</code> column (transaction amounts in dollars)</li>
+                        <li><strong>Optional:</strong> <code>is_fraud</code> column (0 = normal, 1 = fraudulent)</li>
+                        <li><strong>Example:</strong> <code>amount,is_fraud</code></li>
+                        <li><strong>Example:</strong> <code>250.50,0</code> or <code>1500.00,1</code></li>
+                    </ul>
+                </div>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted">Don't have data? <a href="/demo">Try the demo</a> with synthetic transactions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

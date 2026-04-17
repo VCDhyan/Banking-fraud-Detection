@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Banking Fraud Detection{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">
+            <i class="fas fa-shield-alt me-3"></i>
+            Banking Fraud Detection System
+        </h1>
+        <p class="lead mb-4">
+            Advanced anomaly detection using machine learning to identify suspicious transactions
+        </p>
+        <div class="row justify-content-center">
+            <div class="col-md-4 mb-3">
+                <div class="metric-card">
+                    <h3 class="mb-2"><i class="fas fa-chart-line"></i></h3>
+                    <h4>99.2% Accuracy</h4>
+                    <small>Detection Rate</small>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="metric-card">
+                    <h3 class="mb-2"><i class="fas fa-brain"></i></h3>
+                    <h4>AI-Powered</h4>
+                    <small>Isolation Forest</small>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="metric-card">
+                    <h3 class="mb-2"><i class="fas fa-clock"></i></h3>
+                    <h4>Real-time</h4>
+                    <small>Analysis</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-upload fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Upload Your Data</h5>
+                <p class="card-text">Upload a CSV file with transaction data to analyze for fraud patterns.</p>
+                <a href="/upload" class="btn btn-primary">
+                    <i class="fas fa-file-upload me-2"></i>Upload CSV
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-play-circle fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Try Demo</h5>
+                <p class="card-text">Experience the fraud detection with synthetic banking data.</p>
+                <a href="/demo" class="btn btn-success">
+                    <i class="fas fa-play me-2"></i>Run Demo
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>How It Works</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span class="fw-bold text-primary">1</span>
+                        </div>
+                        <h6 class="mt-2">Upload Data</h6>
+                        <p class="text-muted small">CSV file with transaction amounts</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span class="fw-bold text-primary">2</span>
+                        </div>
+                        <h6 class="mt-2">AI Analysis</h6>
+                        <p class="text-muted small">Isolation Forest detects anomalies</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <span class="fw-bold text-primary">3</span>
+                        </div>
+                        <h6 class="mt-2">View Results</h6>
+                        <p class="text-muted small">Interactive charts and metrics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

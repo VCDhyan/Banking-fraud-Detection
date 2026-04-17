@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Results - Banking Fraud Detection{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Fraud Detection Results</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <div class="metric-card">
+                            <h3 class="mb-2"><i class="fas fa-list"></i></h3>
+                            <h4>{{ results.total_transactions }}</h4>
+                            <small>Total Transactions</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="metric-card">
+                            <h3 class="mb-2"><i class="fas fa-exclamation-triangle"></i></h3>
+                            <h4>{{ results.detected_fraud }}</h4>
+                            <small>Flagged as Fraud</small>
+                        </div>
+                    </div>
+                    {% if results.accuracy %}
+                    <div class="col-md-3 mb-3">
+                        <div class="metric-card">
+                            <h3 class="mb-2"><i class="fas fa-chart-line"></i></h3>
+                            <h4>{{ "%.1f"|format(results.accuracy * 100) }}%</h4>
+                            <small>Accuracy</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="metric-card">
+                            <h3 class="mb-2"><i class="fas fa-shield-alt"></i></h3>
+                            <h4>{{ "%.1f"|format(results.report['1']['precision'] * 100) }}%</h4>
+                            <small>Fraud Detection Precision</small>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if results.visualization %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Fraud Detection Visualization</h5>
+            </div>
+            <div class="card-body">
+                <img src="{{ url_for('get_report', filename=results.visualization.split('/')[-1]) }}"
+                     alt="Fraud Detection Visualization" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if results.confusion_matrix %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-table me-2"></i>Confusion Matrix</h5>
+            </div>
+            <div class="card-body">
+                <img src="{{ url_for('get_report', filename=results.confusion_matrix.split('/')[-1]) }}"
+                     alt="Confusion Matrix" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Detailed Metrics</h5>
+            </div>
+            <div class="card-body">
+                {% if results.report %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1-Score</th>
+                                <th>Support</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge bg-primary">Normal</span></td>
+                                <td>{{ "%.3f"|format(results.report['0']['precision']) }}</td>
+                                <td>{{ "%.3f"|format(results.report['0']['recall']) }}</td>
+                                <td>{{ "%.3f"|format(results.report['0']['f1-score']) }}</td>
+                                <td>{{ results.report['0']['support'] }}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge bg-danger">Fraud</span></td>
+                                <td>{{ "%.3f"|format(results.report['1']['precision']) }}</td>
+                                <td>{{ "%.3f"|format(results.report['1']['recall']) }}</td>
+                                <td>{{ "%.3f"|format(results.report['1']['f1-score']) }}</td>
+                                <td>{{ results.report['1']['support'] }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-table me-2"></i>Sample Transactions</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Amount ($)</th>
+                                {% if data[0].get('is_fraud') is not none %}
+                                <th>Actual Fraud</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaction in data %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>${{ "%.2f"|format(transaction.amount) }}</td>
+                                {% if transaction.get('is_fraud') is not none %}
+                                <td>
+                                    {% if transaction.is_fraud == 1 %}
+                                        <span class="badge bg-danger">Fraud</span>
+                                    {% else %}
+                                        <span class="badge bg-success">Normal</span>
+                                    {% endif %}
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 text-center">
+        <a href="/" class="btn btn-primary me-2">
+            <i class="fas fa-home me-2"></i>Home
+        </a>
+        <a href="/upload" class="btn btn-secondary me-2">
+            <i class="fas fa-upload me-2"></i>Upload Another File
+        </a>
+        <a href="/demo" class="btn btn-success">
+            <i class="fas fa-play me-2"></i>Run Demo Again
+        </a>
+    </div>
+</div>
+{% endblock %}
